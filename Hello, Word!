@@ -1,0 +1,4 @@
+std_lib_falitilitie.cpp
+int main()
+print "Hello, World!/n"
+return 0
