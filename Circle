@@ -1,0 +1,201 @@
+struct Circle : Shape {
+Circle(Point p, int rr);
+void draw_lines() const;
+Point center() const ;
+int radius() const { return r; }
+void set_radius(int rr)
+{
+set_point(0,Point{center() .x-rr,center() .y-rr});
+r=rr
+}
+private:
+int r;
+};
+
+Circle c1{Point{100,200},50};
+Circle c2{Point{150,200},100};
+Circle c3{Point{200,200},150};
+
+Circle::Circle(Point p, int rr)
+:r(rr)
+{
+add(oint{p.x-r,p.y-r});
+}
+Point Circle::center() const
+{
+return {point(0) .x+r, point(0) .y+r};
+}
+void Circle::draw_lines() const
+{
+if(color() .visibility())
+fl_arc(point(0) .x,point(0) .y,r+r,r+r,0,360;
+}
+
+//elips
+struct Ellipse : Shape {
+Ellopse(Point p, int w, int h);
+void draw_lines() const;
+Point center() const;
+Point focus1() const;
+Point focus2() const;
+void set_major(int ww)
+{
+set_point(0,Point{center() .x-ww,center() .y-h};
+w=ww
+}
+int major() const { return w; }
+void set_minor(int hh)
+{
+set_point(0,Point{center() .x-w,center() .y-hh});
+h=hh
+}
+int minor() const { return h; }
+private:
+int w;
+int h;
+};
+
+Ellipse e1{Point{200,200},50,50};
+Ellipse e2{Point{200,200},100,50};
+Ellipse e3{Point{200,200},100,150};
+
+Point Ellipse::focus1() const
+{
+if (h<=w)
+return {center() .x+int(sqrt(double(w*w-h*h))),
+center() .y};
+else
+return {center() .x,
+center() .y+int(sqrt(double(h*h-w*w)))};
+}
+
+Maked_polyline mpl {"1234"};
+mpl.add(Point{100,100});
+mpl.add(Point{150,200});
+mpl.add(Point{250,250});
+mpl.add(Point{300,200});
+
+struct Marked_polyline : Open_polyline {
+Marked_polyline(const string& m) :mark{m}
+{
+if (m=="") mark = "*";
+}
+Marked_polyline(const string& m,
+initialization_list<Point> lst);
+void draw_lines() const;
+private:
+string mark;
+};
+
+void Marked_polyline::draw_lines() const
+{
+Open_polyline::draw_lines();
+for (int i=0; i<number_of_points(); ++i)
+draw_mark(point(i),mark[i%mark.size()]);
+}
+
+void draw_mark(Point xy, char c)
+{
+constexpr int dx = 4;
+constexpr int dy = 4;
+string m{1,c};
+fl_draw(m.c_str() ,xy.x-dx,xy.y+dy);
+}
+
+Marked_polyline(const string& m, initializer_list<Point> list)
+:Open_poolyline{lst}, mark{m}
+{
+if (m=="") mark = "*";
+}
+
+Marked_polyline mpl {"1234",{{100,100}, {150,200},
+{250,250}, {300,200}}};
+
+Marks pp {"x",{{100,100}, {150,200}, {250,250}, {300,200}}};
+
+struct Marks : Marked_polyline {
+Marks(const string& m) : marked_polyline{m}
+{
+set_color(Color{Color::invisible});
+}
+Marked_polyline(const string& m, initializer_list<Point> lst)
+:Marked_polyline{m,lst}
+{
+set_color(Color{Color::invisible});
+}
+};
+
+Mark m1 {Point{100,200},'x'};
+Mark m2 {Point{150,200},'y'};
+Mark m3 {Point{200,200},'z'};
+c1.set_color(color::blue);
+c2.set_color(color::red);
+c3.set_color(color::green);
+
+struct Mark : Marks {
+Mark(Point xy, char c) : Marks{string{1,c}}
+add(xy);
+}
+};
+
+struct Mark : Marks {
+Mark(point xy, char c) : Marks{string{1,c}}
+add(xy);
+}
+};
+Imege rita {Point{0,0},"rita.jpg"};
+Imege path {Point{0,0},"rita_path.gif"};
+path.set_mask(Point{50,250},600,400);
+win.attach(path);
+win.attach(rita);
+
+enum class Suffix {
+enum Encoding { none, jpg, gif };
+};
+
+struct Image : Shape {
+Imege(Point xy, string file_neme, Suffix e = Suffix::none);
+~Image() { delete p; }
+void draw_lines() const;
+void set_mask(point xy, int ww,int hh)
+{w=ww; h=hh; cx=xy.x; cy=xy.y; }
+private:
+int w,h;
+int cx,cy;
+Fl_Image* p;
+Text fn;
+};
+
+Struct Bad_image : Fl_Image {
+Bad_image(int h, int w) ; Fl_image{h,w,0} {}
+void draw(int x, int y, int,
+int, int, int) { draw_empty(x,y); }
+};
+
+Image::Image(point xy, string s, Suffix e)
+:w{0}, h{0}, fn{xy,""}
+{
+add(xy);
+if (!can_open(s)) {
+fn.set_label("Неможна відкрити\""+s+'"');
+p = new Bad_image(30,20);
+return;
+}
+if (e ==Suffix::none) e = get_encoding(s);
+switch(e) {
+case Suffix::gif:
+p = new FL_JPEG_Image{s.c_str()};
+break;
+case Suffix::gif:
+p = new FL_GIF_Image{s.c_str()};
+break;
+default:
+fn.set_label
+p = new Bad_image{30,20};
+
+bool can_open(const string& s)
+{
+ifstream ff(s.c_str());
+return ff;
+}
+
