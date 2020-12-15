@@ -1,0 +1,94 @@
+draw_rectangle(point{100,200}, 300, 400);
+draw_redtangle (100,200,300,400);
+
+Open_polyline opl;
+opl.add(Point{100,100});
+opl.add(Point{150,200});
+opl.add(Point{250,250});
+
+Class Shape {
+public:
+void draw() const;
+virtual void move(it dx, int dy);
+void set_color(Color col);
+Color color() const;
+void set_style(Line_style sty);
+Line_style style() const;
+voidset_fill_color(Color col);
+Color fill_color() const;
+Point point(int i) const;
+int number_of_points() const;
+Shape(const Shape&) = delete;
+Shape& operator=(const Shape&)
+=delete;
+virtual ~Shape() { }
+protected:
+Shape{};
+Shape(initiazizer_list<Point> lst);
+virtual void draw_lines() const;
+void add(Point p);
+void set_point(int i, Point p);
+private:
+vector<Point>points;
+Color lcolor{fl_color()};
+Line_style ls{0};
+Color fcolor{Color::invisible};
+};
+
+protected:
+Shape{};
+Shape(initializer_list<Point> lst);
+
+Shape::Shape(initializer_list<Point> lst)
+{
+for (Point p : lst) add(p);
+}
+
+virtual ~Shape() {}
+
+private:
+vector<Point> points;
+Color lcolor{fl_color()};
+Line_style ls{0};
+Color fcolor{Color::invisible};
+
+void Shape::set_color(Color col)
+{
+lcolor = col;
+}
+Color Shape::color() const
+{
+return lcolor;
+}
+
+void Shape::add(Point p)
+{
+points.push_back(p);
+}
+
+Shape();
+Shape(initializer_list<Point>);
+void draw() const;
+virtual void draw_lines() const;
+virtual void move(int dx, int dy);
+virtual ~Shape();
+vector<Point> points;
+Color lcolor;
+line_style ls;
+Color fcolor;
+};
+
+Fl_color lcolor;
+int line_style;
+
+void draw() const;
+virtual void draw_lines() const;
+void Shape::draw() const
+{
+Fl_Color oldc = fl_color();
+fl_color(lcolor.as_int());
+fl_line_style(ls.style() ,ls.width());
+draw_lines();
+fl_color(oldc);
+fl_line_style(0);
+
